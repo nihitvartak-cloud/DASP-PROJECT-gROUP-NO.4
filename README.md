@@ -84,7 +84,9 @@ Dsap simulator/
 │   ├── tests.js            # Automated test suite (73 unit tests) runnable via Node.js or browser
 │   └── test_runner.html    # Browser-based test runner interface
 ├── backend/
-│   └── linked_list.py      # Companion Python reference implementations for all 4 list types
+│   ├── linked_list.py      # Companion Python reference implementations for all 4 list types
+│   ├── stack.py            # Bounded stack reference with JSON operation snapshots
+│   └── queue.py            # Bounded queue reference with JSON operation snapshots
 ├── server.py               # Optional Python HTTP server (python server.py)
 ├── server.js               # Optional Node.js HTTP server (node server.js)
 └── README.md               # Complete project documentation and guide
@@ -94,20 +96,24 @@ Dsap simulator/
 
 ## 🛠️ Setup and Execution Instructions
 
-### Option 1: Direct Browser Launch (Zero Installation)
-Because the application is written entirely in Vanilla HTML5, CSS3, and JavaScript with **zero external dependencies**:
-1. Simply navigate to the project folder.
-2. Double-click `index.html` to open it in Chrome, Edge, Firefox, or Safari.
-3. The simulator runs completely offline in your browser.
-
-### Option 2: Local HTTP Server (Python)
-If you prefer running via a local web server:
+### Primary: Run with Python
+Use the Python server as the main entry point. It serves the browser simulator and its assets from the project directory; no packages are required.
 ```bash
 python server.py
 ```
 Open [http://localhost:8080](http://localhost:8080) in your browser.
 
-### Option 3: Local HTTP Server (Node.js)
+Python reference implementations for linked lists, stacks, and queues are in `backend/` and can also be run directly:
+```bash
+python backend/linked_list.py
+python backend/stack.py
+python backend/queue.py
+```
+
+### Alternative: Direct Browser Launch
+Open `index.html` in Chrome, Edge, Firefox, or Safari to run the browser simulator without starting a server.
+
+### Alternative: Local HTTP Server (Node.js)
 ```bash
 node server.js
 ```
@@ -156,6 +162,16 @@ Testing Python Linked List Reference Implementations...
   [OK] CircularSinglyLinkedList passed
   [OK] CircularDoublyLinkedList passed
 All Python backend reference tests passed successfully!
+```
+
+### Running Python Stack and Queue Examples
+Each script prints one JSON record per operation, including the returned result
+and the complete state after that operation. Capacity overflow is reported as
+`false` without changing the stored values.
+
+```bash
+python backend/stack.py
+python backend/queue.py
 ```
 
 ---

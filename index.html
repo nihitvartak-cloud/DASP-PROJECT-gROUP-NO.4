@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Simulator — Linked List Lab</title>
+    <meta name="description" content="An interactive educational data structures laboratory dedicated to Linked Lists. Master Singly, Doubly, Circular Singly, and Circular Doubly linked lists with step-by-step visualizations, code in 5 languages, quizzes, and algorithmic challenges.">
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="sidebar" id="app-sidebar">
+            <div class="header-main-row">
+                <a class="sidebar-brand" href="#view-dashboard" data-view="dashboard">
+                    <div class="brand-icon" aria-hidden="true">
+                        <svg viewBox="0 0 32 32" width="25" height="25" fill="none">
+                            <path d="M8 16h16M11 12l10 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                            <circle cx="7" cy="16" r="3" fill="currentColor" />
+                            <circle cx="24" cy="16" r="3" fill="currentColor" />
+                            <circle cx="22" cy="10" r="3" fill="currentColor" />
+                            <circle cx="22" cy="22" r="3" fill="currentColor" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="brand-title">DSA Simulator</h1>
+                        <div class="brand-subtitle">LINKED LIST LAB</div>
+                    </div>
+                </a>
+                <nav class="list-type-nav" aria-label="Linked list types">
+                    <a class="list-type-link active" href="#view-simulator" data-type="singly">Singly Linked</a>
+                    <a class="list-type-link" href="#view-simulator" data-type="doubly">Doubly Linked</a>
+                    <a class="list-type-link" href="#view-simulator" data-type="circular-singly">Circular Linked</a>
+                    <a class="list-type-link" href="#view-simulator" data-type="circular-doubly">Circular Doubly</a>
+                </nav>
+                <button class="mobile-menu-btn" id="mobile-toggle" aria-label="Toggle learning navigation">☰</button>
+            </div>
+            <nav class="sidebar-nav" aria-label="Learning and practice">
+                <a class="nav-item" href="#view-dashboard" data-view="dashboard"><span class="nav-icon">⌂</span><span>Home</span></a>
+                <a class="nav-item" href="#view-learn" data-view="learn"><span class="nav-icon">◉</span><span>Learn</span></a>
+                <a class="nav-item active" href="#view-simulator" data-view="simulator"><span class="nav-icon">⌘</span><span>Simulator</span></a>
+                <a class="nav-item" href="#view-study" data-view="study"><span class="nav-icon">▷</span><span>Study Mode</span></a>
+                <a class="nav-item" href="#view-code-viewer" data-view="code-viewer"><span class="nav-icon">&lt;/&gt;</span><span>Code</span></a>
+                <a class="nav-item" href="#view-complexity" data-view="complexity"><span class="nav-icon">▥</span><span>Complexity</span></a>
+                <a class="nav-item" href="#view-quiz" data-view="quiz"><span class="nav-icon">?</span><span>Quiz</span></a>
+                <a class="nav-item" href="#view-challenges" data-view="challenges"><span class="nav-icon">✦</span><span>Challenges</span></a>
+                <a class="nav-item" href="#view-progress" data-view="progress"><span class="nav-icon">↗</span><span>Progress</span></a>
+                <a class="nav-item" href="#view-about" data-view="about"><span class="nav-icon">i</span><span>About</span></a>
+            </nav>
+        </header>
+
+        <!-- ============================================================
+             MAIN WORKSPACE
+             ============================================================ -->
+        <div class="main-wrapper">
+            <!-- Top Navbar Header -->
+            <header class="top-navbar">
+                <div class="navbar-left">
+                    <div class="page-breadcrumb">
+                        Linked List Simulator / <strong id="current-view-title">Singly Linked List Simulator</strong>
+                    </div>
+                </div>
+                <div class="navbar-right">
+                    <span class="tag-badge">Vanilla JS</span>
+                    <span class="tag-badge">Zero API Calls</span>
+                </div>
+            </header>
+
+            <!-- Main Content Container -->
+            <main class="content-area">
+                
+                <!-- 1. HOME / DASHBOARD VIEW -->
+                <section class="view-section" id="view-dashboard">
+                    <div class="hero-card">
+                        <span class="hero-tag">Virtual DSA Laboratory</span>
+                        <h1>Master Linked Lists Interactively</h1>
+                        <p>Explore dynamic pointer manipulation, node allocations, bidirectional linking, and circular loops. Designed for students to build an intuitive mental model through step-by-step visual feedback.</p>
+                        <div class="hero-actions">
+                            <button class="btn btn-primary btn-lg" onclick="window.SimulatorUI.switchView('simulator')">🚀 Open Simulator</button>
+                            <button class="btn btn-secondary btn-lg" onclick="window.SimulatorUI.switchView('study')">🎓 Guided Study Mode</button>
+                            <button class="btn btn-secondary btn-lg" onclick="window.SimulatorUI.switchView('quiz')">📝 Take Quiz</button>
+                        </div>
+                    </div>
+
+                    <!-- 4 Types Overview Cards -->
+                    <div class="section-header">
+                        <h2>The 4 Core Linked List Types</h2>
+                        <p>Select any type to launch interactive exploration in the simulator.</p>
+                    </div>
+
+                    <div class="grid-4">
+                        <div class="card">
+                            <div style="font-size: 28px; margin-bottom: 8px;">➡️</div>
+                            <h3 style="font-size: 17px; font-weight: 700; margin-bottom: 6px;">Singly Linked List</h3>
+                            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">Unidirectional chain of nodes where each node contains data and a pointer to the next node. Terminates at NULL.</p>
+                            <button class="btn btn-primary btn-sm" onclick="window.SimulatorUI.selectTypeAndGo('singly')">Simulate SLL</button>
+                        </div>
+                        <div class="card">
+                            <div style="font-size: 28px; margin-bottom: 8px;">⇄</div>
+                            <h3 style="font-size: 17px; font-weight: 700; margin-bottom: 6px;">Doubly Linked List</h3>
+                            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">Bidirectional nodes with both <code>prev</code> and <code>next</code> pointers. Enables O(1) tail deletion and backwards traversal.</p>
+                            <button class="btn btn-purple btn-sm" onclick="window.SimulatorUI.selectTypeAndGo('doubly')">Simulate DLL</button>
+                        </div>
+                        <div class="card">
+                            <div style="font-size: 28px; margin-bottom: 8px;">🔄</div>
+                            <h3 style="font-size: 17px; font-weight: 700; margin-bottom: 6px;">Circular Singly</h3>
+                            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">Tail node connects back to the HEAD node rather than pointing to NULL. Forms an endless loop ideal for round-robin tasks.</p>
+                            <button class="btn btn-primary btn-sm" onclick="window.SimulatorUI.selectTypeAndGo('circular-singly')">Simulate CSLL</button>
+                        </div>
+                        <div class="card">
+                            <div style="font-size: 28px; margin-bottom: 8px;">🔁</div>
+                            <h3 style="font-size: 17px; font-weight: 700; margin-bottom: 6px;">Circular Doubly</h3>
+                            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">Combines bidirectional traversal with circular linkage: tail.next is HEAD and head.prev is TAIL. Maximum structural flexibility.</p>
+                            <button class="btn btn-purple btn-sm" onclick="window.SimulatorUI.selectTypeAndGo('circular-doubly')">Simulate CDLL</button>
+                        </div>
+                    </div>
+
+                    <!-- Arrays vs Linked Lists comparison banner -->
+                    <div class="card" style="margin-top: 10px; background-color: #f8fafc; border-left: 4px solid var(--primary);">
+                        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">💡 Arrays vs. Linked Lists: Key Intuition</h3>
+                        <p style="font-size: 13.5px; color: #334155; line-height: 1.6;">
+                            Unlike arrays that require contiguous blocks of memory, a <strong>Linked List</strong> stores elements in non-contiguous heap nodes stitched together via explicit memory address pointers. This provides effortless <strong>O(1) insertions at the head</strong> and dynamic sizing, at the tradeoff of sequential <strong>O(n) random access</strong> instead of instant index arithmetic.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- 2. LEARN LINKED LISTS VIEW -->
+                <section class="view-section" id="view-learn">
+                    <div class="section-header">
+                        <h2>Conceptual Guides & Deep Dives</h2>
+                        <p>Detailed node anatomy, pointer mechanics, and real-world engineering applications.</p>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="card">
+                            <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 12px; color: var(--primary);">1. Singly Linked List Anatomy</h3>
+                            <p style="font-size: 14px; margin-bottom: 12px;">Every node in a Singly Linked List is an allocated struct/object with two parts:</p>
+                            <ul style="margin-left: 20px; font-size: 13.5px; margin-bottom: 16px; color: #334155;">
+                                <li><strong>Data Field:</strong> Holds the stored value (integer, string, object).</li>
+                                <li><strong>Next Pointer:</strong> Holds the 64-bit memory address of the next node or <code>NULL</code>.</li>
+                                <li><strong>HEAD:</strong> Pointer to the first element in the sequence.</li>
+                                <li><strong>TAIL:</strong> Pointer to the last element (points to NULL).</li>
+                            </ul>
+                            <div style="background-color: #f1f5f9; padding: 12px; border-radius: var(--radius-sm); font-size: 13px; margin-bottom: 12px;">
+                                <strong>Real-World Usage:</strong> Undo operations in simple text editors, image viewers (Next photo), symbol tables in compilers.
+                            </div>
+                            <button class="btn btn-secondary btn-sm" onclick="window.SimulatorUI.completeLesson('singly')">Mark lesson complete</button>
+                        </div>
+
+                        <div class="card">
+                            <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 12px; color: var(--purple);">2. Doubly Linked List Anatomy</h3>
+                            <p style="font-size: 14px; margin-bottom: 12px;">Doubly linked lists add a backward pointer, enabling bidirectional traversal:</p>
+                            <ul style="margin-left: 20px; font-size: 13.5px; margin-bottom: 16px; color: #334155;">
+                                <li><strong>Prev Pointer:</strong> Holds the memory address of the predecessor node.</li>
+                                <li><strong>Data Field:</strong> Stored element payload.</li>
+                                <li><strong>Next Pointer:</strong> Holds the memory address of the successor node.</li>
+                                <li><strong>O(1) Tail Deletion:</strong> Tail can move directly to <code>tail.prev</code> without scanning from HEAD!</li>
+                            </ul>
+                            <div style="background-color: #f1f5f9; padding: 12px; border-radius: var(--radius-sm); font-size: 13px; margin-bottom: 12px;">
+                                <strong>Real-World Usage:</strong> Web browser Back & Forward navigation history, LRU (Least Recently Used) cache eviction.
+                            </div>
+                            <button class="btn btn-secondary btn-sm" onclick="window.SimulatorUI.completeLesson('doubly')">Mark lesson complete</button>
+                        </div>
+
+                        <div class="card">
+                            <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 12px; color: var(--emerald);">3. Circular Singly Linked List</h3>
+                            <p style="font-size: 14px; margin-bottom: 12px;">In a circular singly list, the final node's next pointer points directly back to HEAD:</p>
+                            <ul style="margin-left: 20px; font-size: 13.5px; margin-bottom: 16px; color: #334155;">
+                                <li><strong>No NULL Pointer:</strong> Traversal never naturally encounters a null terminator.</li>
+                                <li><strong>Cycle Termination:</strong> Loops must check <code>curr.next !== HEAD</code> to prevent infinite loops.</li>
+                                <li><strong>Continuous Cycling:</strong> Any node can act as a starting point.</li>
+                            </ul>
+                            <div style="background-color: #f1f5f9; padding: 12px; border-radius: var(--radius-sm); font-size: 13px; margin-bottom: 12px;">
+                                <strong>Real-World Usage:</strong> OS time-sharing round-robin process scheduling, streaming media circular buffers.
+                            </div>
+                            <button class="btn btn-secondary btn-sm" onclick="window.SimulatorUI.completeLesson('circular-singly')">Mark lesson complete</button>
+                        </div>
+
+                        <div class="card">
+                            <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 12px; color: var(--amber);">4. Circular Doubly Linked List</h3>
+                            <p style="font-size: 14px; margin-bottom: 12px;">The ultimate linked list architecture combining bidirectional navigation and unbroken circularity:</p>
+                            <ul style="margin-left: 20px; font-size: 13.5px; margin-bottom: 16px; color: #334155;">
+                                <li><code>tail.next == HEAD</code> (forward circle closes at start)</li>
+                                <li><code>HEAD.prev == TAIL</code> (backward circle wraps to end in O(1))</li>
+                                <li>Instant access to both ends from anywhere.</li>
+                            </ul>
+                            <div style="background-color: #f1f5f9; padding: 12px; border-radius: var(--radius-sm); font-size: 13px; margin-bottom: 12px;">
+                                <strong>Real-World Usage:</strong> Fibonacci Heaps in advanced graph algorithms, bidirectional circular playlist loops in audio players.
+                            </div>
+                            <button class="btn btn-secondary btn-sm" onclick="window.SimulatorUI.completeLesson('circular-doubly')">Mark lesson complete</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. INTERACTIVE SIMULATOR VIEW -->
+                <section class="view-section active" id="view-simulator">
+                    <div class="simulator-heading">
+                        <div>
+                            <button class="back-home-btn" onclick="window.SimulatorUI.switchView('dashboard')">← Back to Home</button>
+                            <div class="section-header simulator-title-block">
+                                <span class="eyebrow">INTERACTIVE DATA STRUCTURES LAB</span>
+                                <h2 id="simulator-title">Singly Linked List Simulator</h2>
+                                <p id="simulator-subtitle">A linear chain where each node points forward to the next, ending at NULL.</p>
+                            </div>
+                        </div>
+                        <div class="preset-actions">
+                            <button class="btn btn-secondary" onclick="window.SimulatorUI.loadExample()">Load Example</button>
+                            <button class="btn btn-secondary" onclick="window.SimulatorUI.reverseExample()">Reverse Example</button>
+                            <button class="btn btn-secondary" onclick="window.SimulatorUI.resetList()">Reset List</button>
+                        </div>
+                    </div>
+
+                    <div class="simulator-layout">
+                        <div class="simulator-visual-column">
+                            <div class="visualization-card">
+                                <div class="visualization-card-heading">
+                                    <div>
+                                        <span class="eyebrow">MEMORY VIEW</span>
+                                        <h3>Linked List Memory / Node Visualization</h3>
+                                    </div>
+                                    <div class="memory-count">
+                                        <span class="memory-led"></span>
+                                        <span id="sim-node-count">4</span> Nodes
+                                        <span class="memory-capacity" id="sim-capacity">Dynamic</span>
+                                    </div>
+                                </div>
+                                <div class="visualizer-canvas-container" id="simulator-canvas" aria-label="Interactive linked list node diagram">
+                                    <!-- SVG dynamically rendered here -->
+                                </div>
+                                <div class="visualization-legend">
+                                    <span><i class="legend-dot legend-head"></i> HEAD</span>
+                                    <span><i class="legend-dot legend-tail"></i> TAIL</span>
+                                    <span><i class="legend-line"></i> NEXT</span>
+                                    <span><i class="legend-line legend-prev"></i> PREV</span>
+                                    <span class="legend-note">Select a node to inspect its pointers</span>
+                                </div>
+                            </div>
+                            <div class="simulator-status-bar">
+                                <div class="status-indicator">
+                                    <div class="status-dot"></div>
+                                    <span id="sim-status-text">Ready. Perform an operation above.</span>
+                                </div>
+                                <div id="sim-list-meta">Length: 4 | Type: Singly Linked List</div>
+                            </div>
+                        </div>
+
+                        <div class="operations-panel">
+                            <div class="operation-panel-heading">
+                                <span class="eyebrow">CONTROLS</span>
+                                <h3>Linked List Operations</h3>
+                                <p>Choose an action to update the structure.</p>
+                            </div>
+                        <div class="ops-row">
+                            <div class="form-group" style="width: 140px;">
+                                <label class="form-label" for="sim-input-value">Value</label>
+                                <input type="number" class="form-control" id="sim-input-value" placeholder="e.g. 42" value="25">
+                            </div>
+
+                            <div class="form-group" style="width: 140px;" id="sim-pos-group">
+                                <label class="form-label" for="sim-input-pos">Position</label>
+                                <input type="number" class="form-control" id="sim-input-pos" placeholder="0 to N" min="0" value="0">
+                            </div>
+                        </div>
+
+                        <div class="operation-groups">
+                            <div class="operation-group">
+                                <span class="operation-group-label">INSERT</span>
+                                <button class="operation-action" onclick="window.SimulatorUI.execInsertBeg()"><span class="action-icon">＋</span><span>At Beginning</span></button>
+                                <button class="operation-action" onclick="window.SimulatorUI.execInsertEnd()"><span class="action-icon">＋</span><span>At End</span></button>
+                                <button class="operation-action" onclick="window.SimulatorUI.execInsertAt()"><span class="action-icon">＋</span><span>At Position</span></button>
+                            </div>
+                            <div class="operation-group">
+                                <span class="operation-group-label">DELETE</span>
+                                <button class="operation-action action-delete" onclick="window.SimulatorUI.execDeleteBeg()"><span class="action-icon">−</span><span>From Beginning</span></button>
+                                <button class="operation-action action-delete" onclick="window.SimulatorUI.execDeleteEnd()"><span class="action-icon">−</span><span>From End</span></button>
+                                <button class="operation-action action-delete" onclick="window.SimulatorUI.execDeleteAt()"><span class="action-icon">−</span><span>At Position</span></button>
+                            </div>
+                            <div class="operation-group operation-group-utilities">
+                                <span class="operation-group-label">TOOLS</span>
+                                <button class="operation-action" onclick="window.SimulatorUI.execSearch()"><span class="action-icon">⌕</span><span>Search Value</span></button>
+                                <button class="operation-action" onclick="window.SimulatorUI.execUpdate()"><span class="action-icon">✎</span><span>Update Value</span></button>
+                                <button class="operation-action" onclick="window.SimulatorUI.execTraverse()"><span class="action-icon">↪</span><span>Traverse List</span></button>
+                                <button class="operation-action" id="btn-reverse" onclick="window.SimulatorUI.execReverse()"><span class="action-icon">↶</span><span>Reverse List</span></button>
+                            </div>
+                            <div class="operation-footer-actions">
+                                <button class="btn btn-secondary btn-sm" onclick="window.SimulatorUI.execRandom()">Random Example</button>
+                                <button class="btn btn-secondary btn-sm" onclick="window.SimulatorUI.execClear()">Clear List</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. STEP-BY-STEP STUDY MODE VIEW -->
+                <section class="view-section" id="view-study">
+                    <div class="section-header">
+                        <h2>Step-by-Step Study Mode</h2>
+                        <p>Slow down the algorithm. Inspect every pointer assignment and understand the underlying mechanics.</p>
+                    </div>
+
+                    <div class="card" style="margin-bottom: 20px;">
+                        <div class="ops-row">
+                            <div class="form-group" style="width: 220px;">
+                                <label class="form-label" for="study-type-select">List Type</label>
+                                <select class="form-control" id="study-type-select">
+                                    <option value="singly">Singly Linked List</option>
+                                    <option value="doubly">Doubly Linked List</option>
+                                    <option value="circular-singly">Circular Singly Linked List</option>
+                                    <option value="circular-doubly">Circular Doubly Linked List</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="width: 220px;">
+                                <label class="form-label" for="study-op-select">Select Operation</label>
+                                <select class="form-control" id="study-op-select">
+                                    <option value="insertBeginning">Insert at Beginning</option>
+                                    <option value="insertEnd">Insert at End</option>
+                                    <option value="insertAt">Insert at Position</option>
+                                    <option value="deleteBeginning">Delete from Beginning</option>
+                                    <option value="deleteEnd">Delete from End</option>
+                                    <option value="deleteAt">Delete at Position</option>
+                                    <option value="search">Search for a Value</option>
+                                    <option value="traverse">Traverse the List</option>
+                                    <option value="updateAt">Update a Node</option>
+                                    <option value="reverse">Reverse the List</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="width: 140px;">
+                                <label class="form-label" for="study-input-value">Node Value</label>
+                                <input type="number" class="form-control" id="study-input-value" value="99">
+                            </div>
+                            <div class="form-group" style="width: 140px;">
+                                <label class="form-label" for="study-input-pos">Position (Index)</label>
+                                <input type="number" class="form-control" id="study-input-pos" min="0" value="2">
+                            </div>
+                            <button class="btn btn-primary" onclick="window.SimulatorUI.startStudyDemo()">Load Guided Demo</button>
+                        </div>
+                    </div>
+
+                    <!-- Visualizer Stage for Study -->
+                    <div class="visualizer-canvas-container" id="study-canvas">
+                        <!-- Rendered by study visualizer -->
+                    </div>
+
+                    <!-- Step Stepper Controller Card -->
+                    <div class="stepper-card">
+                        <div id="study-step-info">
+                            <div class="step-card">
+                                <span class="step-badge">Ready</span>
+                                <h4 class="step-title">Load an Operation to Begin</h4>
+                                <p class="step-desc">Pick an operation from the dropdown and click "Load Guided Demo" to step through pointer changes one by one.</p>
+                            </div>
+                        </div>
+                        <div class="grid-2" style="margin-top: 18px;">
+                            <div class="card">
+                                <h3 style="font-size: 16px; margin-bottom: 8px;">Pseudocode</h3>
+                                <pre class="code-body" id="study-pseudocode">Choose an operation to see its algorithm.</pre>
+                            </div>
+                            <div class="card">
+                                <h3 style="font-size: 16px; margin-bottom: 8px;">Complexity</h3>
+                                <p id="study-complexity" style="font-size: 14px; line-height: 1.6; color: var(--text-muted);">Load a guided demo to see time and auxiliary space complexity.</p>
+                            </div>
+                        </div>
+
+                        <div class="stepper-controls">
+                            <div class="step-btn-group">
+                                <button class="btn btn-secondary btn-sm" onclick="window.SimulatorUI.studyFirst()">⏮ First</button>
+                                <button class="btn btn-secondary btn-sm" onclick="window.SimulatorUI.studyPrev()">◀ Previous Step</button>
+                                <button class="btn btn-primary btn-sm" id="btn-study-play" onclick="window.SimulatorUI.studyPlayToggle()">▶ Play</button>
+                                <button class="btn btn-secondary btn-sm" onclick="window.SimulatorUI.studyNext()">Next Step ▶</button>
+                                <button class="btn btn-secondary btn-sm" onclick="window.SimulatorUI.studyLast()">⏭ Last</button>
+                                <button class="btn btn-secondary btn-sm" onclick="window.SimulatorUI.studyReset()">↺ Reset</button>
+                            </div>
+
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Animation Speed:</span>
+                                <select class="form-control" style="width: 90px; padding: 4px 8px; font-size: 12px;" id="study-speed-select" onchange="window.SimulatorUI.setStudySpeed(this.value)">
+                                    <option value="0.5">0.5x</option>
+                                    <option value="1" selected>1.0x</option>
+                                    <option value="1.5">1.5x</option>
+                                    <option value="2">2.0x</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. ALGORITHM & CODE VIEWER VIEW -->
+                <section class="view-section" id="view-code-viewer">
+                    <div class="section-header">
+                        <h2>Algorithm & Multi-Language Code Viewer</h2>
+                        <p>Compare algorithm steps, pseudocode, and language examples for each selected operation.</p>
+                    </div>
+
+                    <div class="card" style="margin-bottom: 20px;">
+                        <div class="ops-row">
+                            <div class="form-group" style="width: 220px;">
+                                <label class="form-label">Data Structure Type</label>
+                                <select class="form-control" id="code-list-type" onchange="window.SimulatorUI.updateCodeViewer()">
+                                    <option value="singly">Singly Linked List</option>
+                                    <option value="doubly">Doubly Linked List</option>
+                                    <option value="circularSingly">Circular Singly List</option>
+                                    <option value="circularDoubly">Circular Doubly List</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="width: 240px;">
+                                <label class="form-label">Operation</label>
+                                <select class="form-control" id="code-operation" onchange="window.SimulatorUI.updateCodeViewer()">
+                                    <option value="insertBeginning">Insert at Beginning</option>
+                                    <option value="insertEnd">Insert at End</option>
+                                    <option value="insertAt">Insert at Position</option>
+                                    <option value="deleteBeginning">Delete from Beginning</option>
+                                    <option value="deleteEnd">Delete from End</option>
+                                    <option value="deleteAt">Delete at Position</option>
+                                    <option value="search">Search for a Value</option>
+                                    <option value="traverse">Traverse the List</option>
+                                    <option value="updateAt">Update a Node</option>
+                                    <option value="reverse">Reverse List</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="code-viewer-container">
+                        <div class="code-header">
+                            <div class="lang-tabs">
+                                <button class="lang-tab active" data-lang="steps" onclick="window.SimulatorUI.setCodeLang('steps')">Algorithm Steps</button>
+                                <button class="lang-tab" data-lang="pseudocode" onclick="window.SimulatorUI.setCodeLang('pseudocode')">Pseudocode</button>
+                                <button class="lang-tab" data-lang="javascript" onclick="window.SimulatorUI.setCodeLang('javascript')">JavaScript</button>
+                                <button class="lang-tab" data-lang="c" onclick="window.SimulatorUI.setCodeLang('c')">C</button>
+                                <button class="lang-tab" data-lang="cpp" onclick="window.SimulatorUI.setCodeLang('cpp')">C++</button>
+                                <button class="lang-tab" data-lang="python" onclick="window.SimulatorUI.setCodeLang('python')">Python</button>
+                            </div>
+                            <button class="btn btn-secondary btn-sm" onclick="window.SimulatorUI.copyCode()">📋 Copy Code</button>
+                        </div>
+                        <pre class="code-body" id="code-display-block">// Code will load here</pre>
+                    </div>
+                </section>
+
+                <!-- 6. COMPLEXITY COMPARISON VIEW -->
+                <section class="view-section" id="view-complexity">
+                    <div class="section-header">
+                        <h2>Time & Space Complexity Matrix</h2>
+                        <p>Direct comparison across all 4 linked list variations and contiguous arrays.</p>
+                    </div>
+
+                    <div class="complexity-table-wrapper card" style="padding: 0;">
+                        <table class="complexity-table">
+                            <thead>
+                                <tr>
+                                    <th>Operation</th>
+                                    <th>Array (Dynamic)</th>
+                                    <th>Singly (SLL)</th>
+                                    <th>Doubly (DLL)</th>
+                                    <th>Circular Singly</th>
+                                    <th>Circular Doubly</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Access by Index</strong></td>
+                                    <td><span class="badge-o1">O(1)</span></td>
+                                    <td><span class="badge-on">O(n)</span></td>
+                                    <td><span class="badge-on">O(n)</span></td>
+                                    <td><span class="badge-on">O(n)</span></td>
+                                    <td><span class="badge-on">O(n)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Search Value</strong></td>
+                                    <td><span class="badge-on">O(n)</span></td>
+                                    <td><span class="badge-on">O(n)</span></td>
+                                    <td><span class="badge-on">O(n)</span></td>
+                                    <td><span class="badge-on">O(n)</span></td>
+                                    <td><span class="badge-on">O(n)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Insert at Beginning</strong></td>
+                                    <td><span class="badge-on">O(n)</span> (shift)</td>
+                                    <td><span class="badge-o1">O(1)</span></td>
+                                    <td><span class="badge-o1">O(1)</span></td>
+                                    <td><span class="badge-o1">O(1)</span></td>
+                                    <td><span class="badge-o1">O(1)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Insert at End (with Tail)</strong></td>
+                                    <td><span class="badge-o1">O(1)*</span></td>
+                                    <td><span class="badge-o1">O(1)</span></td>
+                                    <td><span class="badge-o1">O(1)</span></td>
+                                    <td><span class="badge-o1">O(1)</span></td>
+                                    <td><span class="badge-o1">O(1)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Delete from Beginning</strong></td>
+                                    <td><span class="badge-on">O(n)</span> (shift)</td>
+                                    <td><span class="badge-o1">O(1)</span></td>
+                                    <td><span class="badge-o1">O(1)</span></td>
+                                    <td><span class="badge-o1">O(1)</span></td>
+                                    <td><span class="badge-o1">O(1)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Delete from End (with Tail)</strong></td>
+                                    <td><span class="badge-o1">O(1)</span></td>
+                                    <td><span class="badge-on">O(n)</span> (no prev)</td>
+                                    <td><span class="badge-o1">O(1)</span> (has prev)</td>
+                                    <td><span class="badge-on">O(n)</span> (no prev)</td>
+                                    <td><span class="badge-o1">O(1)</span> (has prev)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Insert / Delete at Position k</strong></td>
+                                    <td><span class="badge-on">O(n)</span></td>
+                                    <td><span class="badge-on">O(k)</span></td>
+                                    <td><span class="badge-on">O(min(k, n-k))</span></td>
+                                    <td><span class="badge-on">O(k)</span></td>
+                                    <td><span class="badge-on">O(min(k, n-k))</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Auxiliary Space</strong></td>
+                                    <td><span class="badge-space">O(1)</span></td>
+                                    <td><span class="badge-space">O(1)</span></td>
+                                    <td><span class="badge-space">O(1)</span></td>
+                                    <td><span class="badge-space">O(1)</span></td>
+                                    <td><span class="badge-space">O(1)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Memory Overhead per Node</strong></td>
+                                    <td>None</td>
+                                    <td>1 Pointer (8 bytes)</td>
+                                    <td>2 Pointers (16 bytes)</td>
+                                    <td>1 Pointer (8 bytes)</td>
+                                    <td>2 Pointers (16 bytes)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="card" style="margin-top: 20px;">
+                        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Key Takeaway: The "Delete Tail" Paradox</h3>
+                        <p style="font-size: 13.5px; color: #334155; line-height: 1.6;">
+                            Students often assume that having a <strong>TAIL pointer</strong> makes deleting the last node O(1) in a Singly Linked List. It does not! Because to update <code>TAIL</code>, you must find the <em>second-to-last</em> node, which requires traversing all <code>n</code> nodes from HEAD. This is precisely why <strong>Doubly Linked Lists</strong> are indispensable: their backward <code>prev</code> pointer turns tail deletion into a pure <strong>O(1) operation</strong>.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- 7. QUIZ AND PRACTICE VIEW -->
+                <section class="view-section" id="view-quiz">
+                    <div class="section-header">
+                        <h2>Interactive Quiz & Assessment</h2>
+                        <p>Test your knowledge with 20 conceptual, tracing, and debugging questions across 3 tiers.</p>
+                    </div>
+
+                    <div class="quiz-container">
+                        <div class="quiz-header">
+                            <div>
+                                <span style="font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Question <span id="quiz-curr-num">1</span> of <span id="quiz-total-num">20</span></span>
+                                <h3 style="font-size: 16px; font-weight: 700;" id="quiz-difficulty-tag">Beginner Tier</h3>
+                            </div>
+                            <div class="difficulty-filter-group">
+                                <button class="diff-btn active" data-diff="all" onclick="window.SimulatorUI.filterQuiz('all')">All</button>
+                                <button class="diff-btn" data-diff="beginner" onclick="window.SimulatorUI.filterQuiz('beginner')">Beginner</button>
+                                <button class="diff-btn" data-diff="intermediate" onclick="window.SimulatorUI.filterQuiz('intermediate')">Intermediate</button>
+                                <button class="diff-btn" data-diff="advanced" onclick="window.SimulatorUI.filterQuiz('advanced')">Advanced</button>
+                            </div>
+                        </div>
+
+                        <div class="quiz-question-box">
+                            <h3 class="quiz-question-title" id="quiz-question-text">Loading question...</h3>
+                            <div class="quiz-options-list" id="quiz-options-container">
+                                <!-- Options rendered dynamically -->
+                            </div>
+                            <div class="quiz-explanation-box" id="quiz-explanation" style="display: none;">
+                                <!-- Explanation text -->
+                            </div>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="font-size: 13.5px; font-weight: 600; color: var(--text-muted);">
+                                Score: <span id="quiz-score-val" style="color: var(--primary);">0</span> / <span id="quiz-answered-val">0</span>
+                            </div>
+                            <button class="btn btn-primary" id="btn-quiz-next" onclick="window.SimulatorUI.nextQuizQuestion()">Next Question ▶</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 8. PRACTICE CHALLENGE MODE VIEW -->
+                <section class="view-section" id="view-challenges">
+                    <div class="section-header">
+                        <h2>Practice Challenges</h2>
+                        <p>Solve targeted pointer puzzles with hints and automated solution verification.</p>
+                    </div>
+
+                    <div class="grid-3" style="margin-bottom: 24px;">
+                        <div class="challenge-card">
+                            <div>
+                                <span class="chal-badge beginner">Beginner</span>
+                                <h4 style="font-size: 16px; font-weight: 700; margin: 10px 0 6px;">Insert at Position 3</h4>
+                                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Insert value 99 into a 5-node list at index 3.</p>
+                            </div>
+                            <button class="btn btn-primary btn-sm" onclick="window.SimulatorUI.loadChallenge(0)">Start Challenge 1</button>
+                        </div>
+                        <div class="challenge-card">
+                            <div>
+                                <span class="chal-badge beginner">Beginner</span>
+                                <h4 style="font-size: 16px; font-weight: 700; margin: 10px 0 6px;">Delete Specified Value</h4>
+                                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Locate node with value 99 and splice it out of the list.</p>
+                            </div>
+                            <button class="btn btn-primary btn-sm" onclick="window.SimulatorUI.loadChallenge(1)">Start Challenge 2</button>
+                        </div>
+                        <div class="challenge-card">
+                            <div>
+                                <span class="chal-badge intermediate">Intermediate</span>
+                                <h4 style="font-size: 16px; font-weight: 700; margin: 10px 0 6px;">Reverse Singly List</h4>
+                                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Invert pointers so [1, 2, 3, 4, 5] becomes [5, 4, 3, 2, 1].</p>
+                            </div>
+                            <button class="btn btn-purple btn-sm" onclick="window.SimulatorUI.loadChallenge(2)">Start Challenge 3</button>
+                        </div>
+                        <div class="challenge-card">
+                            <div>
+                                <span class="chal-badge intermediate">Intermediate</span>
+                                <h4 style="font-size: 16px; font-weight: 700; margin: 10px 0 6px;">Find Middle Node</h4>
+                                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Use two pointers (Tortoise & Hare) to isolate the midpoint node.</p>
+                            </div>
+                            <button class="btn btn-purple btn-sm" onclick="window.SimulatorUI.loadChallenge(3)">Start Challenge 4</button>
+                        </div>
+                        <div class="challenge-card">
+                            <div>
+                                <span class="chal-badge intermediate">Intermediate</span>
+                                <h4 style="font-size: 16px; font-weight: 700; margin: 10px 0 6px;">Circular Linkage</h4>
+                                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Append a node to CSLL and confirm loopback to HEAD.</p>
+                            </div>
+                            <button class="btn btn-purple btn-sm" onclick="window.SimulatorUI.loadChallenge(4)">Start Challenge 5</button>
+                        </div>
+                        <div class="challenge-card">
+                            <div>
+                                <span class="chal-badge advanced">Advanced</span>
+                                <h4 style="font-size: 16px; font-weight: 700; margin: 10px 0 6px;">DLL Two-Way Deletion</h4>
+                                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Delete tail in O(1) time using bidirectional pointers.</p>
+                            </div>
+                            <button class="btn btn-primary btn-sm" onclick="window.SimulatorUI.loadChallenge(5)">Start Challenge 6</button>
+                        </div>
+                        <div class="challenge-card">
+                            <div>
+                                <span class="chal-badge advanced">Advanced</span>
+                                <h4 style="font-size: 16px; font-weight: 700; margin: 10px 0 6px;">Detect a Cycle</h4>
+                                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Use Floyd's slow and fast pointers to detect a loop.</p>
+                            </div>
+                            <button class="btn btn-purple btn-sm" onclick="window.SimulatorUI.loadChallenge(6)">Start Challenge 7</button>
+                        </div>
+                        <div class="challenge-card">
+                            <div>
+                                <span class="chal-badge advanced">Advanced</span>
+                                <h4 style="font-size: 16px; font-weight: 700; margin: 10px 0 6px;">Merge Sorted Lists</h4>
+                                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Merge two sorted singly linked lists in linear time.</p>
+                            </div>
+                            <button class="btn btn-purple btn-sm" onclick="window.SimulatorUI.loadChallenge(7)">Start Challenge 8</button>
+                        </div>
+                    </div>
+
+                    <!-- Active Challenge Playground Card -->
+                    <div class="card" id="chal-active-panel" style="display: none; border-color: var(--primary);">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px;">
+                            <div>
+                                <span class="tag-badge" id="chal-active-badge">Active Task</span>
+                                <h3 style="font-size: 20px; font-weight: 800; margin-top: 6px;" id="chal-active-title">Challenge Title</h3>
+                                <p style="font-size: 14px; color: var(--text-muted);" id="chal-active-instr">Instructions</p>
+                            </div>
+                            <button class="btn btn-secondary btn-sm" onclick="window.SimulatorUI.revealNextHint()">💡 Hint (<span id="chal-hints-count">0/3</span>)</button>
+                        </div>
+
+                        <div id="chal-hint-drawer" style="display: none; padding: 12px 16px; background-color: var(--amber-light); border-left: 4px solid var(--amber); border-radius: var(--radius-sm); margin-bottom: 16px; font-size: 13px;">
+                            <!-- Hint content -->
+                        </div>
+
+                        <div class="ops-row" style="align-items: end; margin-bottom: 14px;">
+                            <div class="form-group" style="width: 150px;">
+                                <label class="form-label" for="chal-input-value">Value</label>
+                                <input class="form-control" type="number" id="chal-input-value" value="99">
+                            </div>
+                            <div class="form-group" style="width: 150px;">
+                                <label class="form-label" for="chal-input-pos">Position (Index)</label>
+                                <input class="form-control" type="number" id="chal-input-pos" min="0" value="0">
+                            </div>
+                            <div class="op-btn-group">
+                                <button class="btn btn-primary btn-sm" onclick="window.SimulatorUI.challengeAction('insertBeginning')">Insert Beginning</button>
+                                <button class="btn btn-primary btn-sm" onclick="window.SimulatorUI.challengeAction('insertEnd')">Insert End</button>
+                                <button class="btn btn-primary btn-sm" onclick="window.SimulatorUI.challengeAction('insertAt')">Insert at Position</button>
+                                <button class="btn btn-danger btn-sm" onclick="window.SimulatorUI.challengeAction('deleteBeginning')">Delete Beginning</button>
+                                <button class="btn btn-danger btn-sm" onclick="window.SimulatorUI.challengeAction('deleteEnd')">Delete End</button>
+                                <button class="btn btn-danger btn-sm" onclick="window.SimulatorUI.challengeAction('deleteAt')">Delete at Position</button>
+                                <button class="btn btn-secondary btn-sm" onclick="window.SimulatorUI.challengeAction('search')">Search Value</button>
+                                <button class="btn btn-secondary btn-sm" onclick="window.SimulatorUI.challengeAction('detectCycle')">Detect Cycle</button>
+                                <button class="btn btn-purple btn-sm" onclick="window.SimulatorUI.challengeAction('mergeSorted')">Merge Sorted Lists</button>
+                                <button class="btn btn-purple btn-sm" onclick="window.SimulatorUI.challengeAction('reverse')">Reverse</button>
+                            </div>
+                        </div>
+                        <p id="chal-status" class="text-muted" aria-live="polite" style="margin-bottom: 12px;">Perform the requested task using these controls, then check your solution.</p>
+                        <div id="chal-merge-info" style="display: none; margin-bottom: 14px; padding: 12px 16px; background: var(--primary-light); border-radius: var(--radius-sm); font-size: 13px;">
+                            <strong>Second sorted list:</strong> <code id="chal-merge-second-values"></code>
+                        </div>
+
+                        <!-- Canvas for Challenge -->
+                        <div class="visualizer-canvas-container" id="chal-canvas" style="min-height: 220px;">
+                            <!-- Visualizer -->
+                        </div>
+
+                        <div style="display: flex; gap: 10px; margin-top: 14px;">
+                            <button class="btn btn-primary" onclick="window.SimulatorUI.verifyChallengeSolution()">Check Solution</button>
+                            <button class="btn btn-secondary" onclick="window.SimulatorUI.resetChallengePlayground()">Reset Challenge</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 9. PROGRESS DASHBOARD VIEW -->
+                <section class="view-section" id="view-progress">
+                    <div class="section-header">
+                        <h2>Your Learning Progress</h2>
+                        <p>Track completed lessons, quiz accuracy, and solved challenges stored locally.</p>
+                    </div>
+
+                    <div class="grid-4" style="margin-bottom: 24px;">
+                        <div class="stat-widget">
+                            <div class="stat-number" id="stat-lessons-count">0/4</div>
+                            <div class="stat-label">Lessons Completed</div>
+                        </div>
+                        <p id="stat-topics-remaining" class="card" style="font-size: 14px; margin-bottom: 24px;">4 list-type lessons remain.</p>
+                        <div class="stat-widget">
+                            <div class="stat-number" id="stat-ops-count">0</div>
+                            <div class="stat-label">Operations Executed</div>
+                        </div>
+                        <div class="stat-widget">
+                            <div class="stat-number" id="stat-quiz-accuracy">0%</div>
+                            <div class="stat-label">Quiz Accuracy</div>
+                        </div>
+                        <div class="stat-widget">
+                            <div class="stat-number" id="stat-chal-count">0/8</div>
+                            <div class="stat-label">Challenges Solved</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="font-size: 17px; font-weight: 700; margin-bottom: 12px;">Storage & Progress Reset</h3>
+                        <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 18px;">
+                            All quiz records and challenge completions are saved directly in your browser's <code>localStorage</code>. No remote account or telemetry is required.
+                        </p>
+                        <button class="btn btn-danger btn-sm" onclick="window.SimulatorUI.confirmResetProgress()">Reset All Progress</button>
+                    </div>
+                </section>
+
+                <!-- 10. ABOUT THE PROJECT VIEW -->
+                <section class="view-section" id="view-about">
+                    <div class="section-header">
+                        <h2>About Linked List Learning Simulator</h2>
+                        <p>Academic design principles, implementation details, and architecture.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 10px;">Purpose & Pedagogy</h3>
+                        <p style="font-size: 14px; color: #334155; line-height: 1.6; margin-bottom: 16px;">
+                            This simulator was built as a dedicated virtual laboratory for Computer Science and Software Engineering students studying Data Structures and Algorithms. By translating abstract pointer concepts into vivid visual structures with real-time bidirectional arrows and step-by-step state engines, students develop an enduring intuition for dynamic memory management.
+                        </p>
+
+                        <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 8px;">Technical Highlights</h4>
+                        <ul style="margin-left: 20px; font-size: 13.5px; color: #334155; line-height: 1.7; margin-bottom: 16px;">
+                            <li><strong>Pure Web Standards:</strong> HTML5, modern CSS3, and Vanilla JavaScript. Zero external frameworks, zero bundlers, and zero API dependencies.</li>
+                            <li><strong>Authentic Data Structures:</strong> Every operation executes real JavaScript classes (`SinglyLinkedList`, `DoublyLinkedList`, `CircularSinglyLinkedList`, `CircularDoublyLinkedList`) synchronized with an SVG visualizer.</li>
+                            <li><strong>Safe Traversal:</strong> Built-in cycle guards prevent infinite loops during circular list traversals.</li>
+                            <li><strong>Polyglot Code Viewer:</strong> Multi-language reference implementations in JavaScript, C, C++, and Python alongside language-agnostic pseudocode.</li>
+                        </ul>
+
+                        <div style="padding: 12px 16px; background-color: var(--primary-light); border-radius: var(--radius-sm); font-size: 13px; color: var(--primary);">
+                            <strong>Local Execution:</strong> Open <code>index.html</code> directly in Google Chrome, Microsoft Edge, Mozilla Firefox, or Safari, or run via <code>python server.py</code>.
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Node Inspector Popover Modal -->
+    <div class="modal-overlay" id="node-modal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 style="font-size: 17px; font-weight: 700;" id="modal-node-title">Node Inspector</h3>
+                <button class="modal-close" onclick="window.SimulatorUI.closeNodeModal()">✕</button>
+            </div>
+            <div id="modal-node-body" style="font-size: 13.5px; line-height: 1.6; color: #334155;">
+                <!-- Populated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Core Engine & UI Binding Script -->
+    <script src="script.js"></script>
+</body>
+</html>

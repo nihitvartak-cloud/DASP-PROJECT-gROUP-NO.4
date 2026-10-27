@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linked List Simulator - Automated Test Runner</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        body { padding: 40px 20px; max-width: 960px; margin: 0 auto; background-color: var(--bg-app); font-family: var(--font-sans); }
+        .test-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .test-card { background: #ffffff; border: 1px solid var(--border-color); border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: var(--shadow-sm); }
+        .test-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid var(--border-color); font-family: var(--font-mono); font-size: 0.88rem; }
+        .test-item:last-child { border-bottom: none; }
+        .badge-pass { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; padding: 3px 8px; border-radius: 4px; font-weight: 700; }
+        .badge-fail { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; padding: 3px 8px; border-radius: 4px; font-weight: 700; }
+    </style>
+</head>
+<body>
+    <div class="test-header">
+        <div>
+            <h1 style="font-size: 24px; font-weight: 800; color: var(--text-main);">🧪 Linked List Automated Test Runner</h1>
+            <p style="color: var(--text-muted); font-size: 14px;">Automated verification across Singly, Doubly, Circular Singly, and Circular Doubly list operations.</p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <a href="../index.html" class="btn btn-secondary">← Back to Simulator</a>
+            <button id="run-tests-btn" class="btn btn-primary">Run Tests</button>
+        </div>
+    </div>
+
+    <div class="test-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h2 id="summary-title" style="margin: 0; font-size: 1.15rem; font-weight: 700;">Ready to execute tests</h2>
+            <div id="stat-counters" style="font-weight: 700; font-size: 14px; color: var(--primary);"></div>
+        </div>
+        <div id="test-list-container">
+            <p style="color: var(--text-muted);">Click "Run Tests" to execute all 73 automated tests.</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../script.js"></script>
+    <script src="tests.js"></script>
+    <script>
+        function execute() {
+            if (typeof window.runAllTests !== 'function') {
+                document.getElementById('summary-title').textContent = 'Error: test suite not loaded.';
+                return;
+            }
+
+            const results = window.runAllTests();
+            const container = document.getElementById('test-list-container');
+            const summaryTitle = document.getElementById('summary-title');
+            const counters = document.getElementById('stat-counters');
+
+            let passCount = 0;
+            let html = '';
+
+            results.forEach((r, idx) => {
+                if (r.status === 'PASS') passCount++;
+                html += `
+                    <div class="test-item">
+                        <span><strong>#${idx + 1}</strong> &nbsp; ${r.name}</span>
+                        <span class="${r.status === 'PASS' ? 'badge-pass' : 'badge-fail'}">${r.status}</span>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            summaryTitle.textContent = passCount === results.length ? '🎉 All 73 Tests Passed Successfully!' : '⚠️ Test Failures Detected';
+            counters.textContent = `${passCount} / ${results.length} Passed`;
+        }
+
+        document.getElementById('run-tests-btn').addEventListener('click', execute);
+        window.addEventListener('DOMContentLoaded', execute);
+    </script>
+</body>
+</html>
