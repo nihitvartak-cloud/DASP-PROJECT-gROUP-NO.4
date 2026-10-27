@@ -103,6 +103,9 @@ python server.py
 ```
 Open [http://localhost:8080](http://localhost:8080) in your browser.
 
+### Run from VS Code
+Press **F5** and choose **Launch Chrome against localhost**. VS Code starts the Python server before opening the simulator at `http://localhost:8080`.
+
 Python reference implementations for linked lists, stacks, and queues are in `backend/` and can also be run directly:
 ```bash
 python backend/linked_list.py
